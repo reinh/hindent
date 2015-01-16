@@ -1,4 +1,6 @@
-{-# LANGUAGE OverloadedStrings, TupleSections, ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TupleSections       #-}
 
 -- | Haskell indenter.
 
@@ -22,25 +24,27 @@ module HIndent
   where
 
 import           HIndent.Pretty
-import           HIndent.Styles.ChrisDone (chrisDone)
-import           HIndent.Styles.Fundamental (fundamental)
-import           HIndent.Styles.Gibiansky (gibiansky)
-import           HIndent.Styles.JohanTibell (johanTibell)
+import           HIndent.Styles.ChrisDone        (chrisDone)
+import           HIndent.Styles.Fundamental      (fundamental)
+import           HIndent.Styles.Gibiansky        (gibiansky)
+import           HIndent.Styles.JohanTibell      (johanTibell)
+import           HIndent.Styles.ReinH            (reinh)
 import           HIndent.Types
 
 import           Control.Monad.State.Strict
 import           Data.Data
 import           Data.Function
+import           Data.Maybe                      (fromMaybe)
 import           Data.Monoid
-import qualified Data.Text.IO as ST
-import           Data.Text.Lazy (Text)
-import qualified Data.Text.Lazy as T
-import           Data.Text.Lazy.Builder (Builder)
-import qualified Data.Text.Lazy.Builder as T
-import qualified Data.Text.Lazy.IO as T
+import qualified Data.Text.IO                    as ST
+import           Data.Text.Lazy                  (Text)
+import qualified Data.Text.Lazy                  as T
+import           Data.Text.Lazy.Builder          (Builder)
+import qualified Data.Text.Lazy.Builder          as T
+import qualified Data.Text.Lazy.IO               as T
 import           Data.Traversable
-import           Language.Haskell.Exts.Annotated hiding (Style,prettyPrint,Pretty,style,parse)
-import           Data.Maybe (fromMaybe)
+import           Language.Haskell.Exts.Annotated hiding (Pretty, Style, parse,
+                                                  prettyPrint, style)
 
 -- | Format the given source.
 reformat :: Style -> Text -> Either String Builder
@@ -104,7 +108,7 @@ testAst x =
 -- | Styles list, useful for programmatically choosing.
 styles :: [Style]
 styles =
-  [fundamental,chrisDone,johanTibell,gibiansky]
+  [fundamental,chrisDone,johanTibell,gibiansky,reinh]
 
 -- | Annotate the AST with comments.
 annotateComments :: forall ast. (Data (ast NodeInfo),Traversable ast,Annotated ast)
